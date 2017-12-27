@@ -13,53 +13,26 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 app.post('/google-home-notifier', urlencodedParser, function (req, res) {
   
+  if (!req.body) return res.sendStatus(400);
+  console.log(req.body);
+
+  if (req.query.ip) {
+    ip = req.query.ip;
+  }
+
+  // googlehome.ip(ip, language);
   googlehome.device(deviceName, language);
 
   const text = req.body.text;
 
-  googlehome.notify('あんなさん、そうたさん。お休みの時間です。', function(notifyRes) {
-    console.log(notifyRes);
-    res.send(deviceName + ' will say: ' + text + '\n');
-  });
-
-  // if (!req.body) return res.sendStatus(400)
-  // console.log(req.body);
-  
-  // var text = req.body.text;
-  
-  // if (req.query.ip) {
-  //    ip = req.query.ip;
-  // }
-
-  // var language = 'pl'; // default language code
-  // if (req.query.language) {
-  //   language;
-  // }
-
-  // googlehome.ip(ip, language);
-
-  // if (text){
-  //   try {
-  //     if (text.startsWith('http')){
-  //       var mp3_url = text;
-  //       googlehome.play(mp3_url, function(notifyRes) {
-  //         console.log(notifyRes);
-  //         res.send(deviceName + ' will play sound from url: ' + mp3_url + '\n');
-  //       });
-  //     } else {
-  //       googlehome.notify(text, function(notifyRes) {
-  //         console.log(notifyRes);
-  //         res.send(deviceName + ' will say: ' + text + '\n');
-  //       });
-  //     }
-  //   } catch(err) {
-  //     console.log(err);
-  //     res.sendStatus(500);
-  //     res.send(err);
-  //   }
-  // }else{
-  //   res.send('Please GET "text=Hello Google Home"');
-  // }
+  if (text){
+    googlehome.notify(text, function(notifyRes) {
+      console.log(notifyRes);
+      res.send(deviceName + ' will say: ' + text + '\n');
+    });
+  } else {
+    res.send('Please GET "text=Hello Google Home"');
+  }
 })
 
 app.get('/google-home-notifier', function (req, res) {
