@@ -17,8 +17,8 @@ app.post('/google-home-notifier', urlencodedParser, function (req, res) {
 
   const text = req.body.text;
 
-  googlehome.notify('あんなさん、そうたさん。お休みの時間です。', function(res) {
-    console.log(res);
+  googlehome.notify('あんなさん、そうたさん。お休みの時間です。', function(notifyRes) {
+    console.log(notifyRes);
     res.send(deviceName + ' will say: ' + text + '\n');
   });
 
